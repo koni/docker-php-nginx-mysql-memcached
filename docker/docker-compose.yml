@@ -41,7 +41,6 @@ services:
     links:
       - mysql
     environment:
-      CI_ENV: development
       DATABASE_HOST: 'mysql'
       DATABASE_NAME: 'mysql_database'
       DATABASE_USER: 'mysql_user'
