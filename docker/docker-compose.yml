@@ -1,0 +1,49 @@
+version: '2'
+services:
+  memcached:
+    image: memcached:1.4
+
+  data:
+    image: busybox
+    volumes:
+      - ./misc/data:/var/lib/mysql
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mysql_database
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: mysql_pw
+    ports:
+      - "13306:3306"
+    volumes_from:
+      - data
+    volumes:
+      - ../application/initial.sql:/docker-entrypoint-initdb.d/initial.sql
+    container_name: mysql
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../:/var/www/html
+    links:
+      - web
+    container_name: nginx
+
+  web:
+    build: ./php-fpm
+    volumes:
+      - ../:/var/www/html
+    links:
+      - mysql
+    environment:
+      CI_ENV: development
+      DATABASE_HOST: 'mysql'
+      DATABASE_NAME: 'mysql_database'
+      DATABASE_USER: 'mysql_user'
+      DATABASE_PASSWORD: 'mysql_pw'
+    container_name: web

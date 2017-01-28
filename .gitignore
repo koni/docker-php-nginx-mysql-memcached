@@ -1,0 +1,5 @@
+# Docker MySQLのデータが入るディレクトリ
+docker/misc/data
+
+# PHPStorm
+.idea
