@@ -22,3 +22,5 @@ $result = $mysql->query($sql)->fetch_row();
 var_dump($result);
 
 mysqli_close($mysql);
+
+phpinfo();
