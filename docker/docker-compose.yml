@@ -2,6 +2,8 @@ version: '2'
 services:
   memcached:
     image: memcached:1.4
+    ports:
+      - "11212:11211"
 
   data:
     image: busybox
@@ -35,8 +37,10 @@ services:
     container_name: nginx
 
   web:
+    #    build: ./php-fpm73   # <- if you want to use PHP7.3
+    #    build: ./php-fpm72   # <- if you want to use PHP7.2
     build: ./php-fpm71
-#    build: ./php-fpm56    <- if you want to use PHP5.6
+    #    build: ./php-fpm56    # <- if you want to use PHP5.6
     volumes:
       - ../:/var/www/html
     links:
